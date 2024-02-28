@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../helpers/constants.dart';
+
 class PrivacyView extends StatelessWidget {
   const PrivacyView({super.key});
 
@@ -21,16 +23,18 @@ class PrivacyView extends StatelessWidget {
                       },
                       icon: const Icon(Icons.chevron_left_rounded)),
                   const Spacer(),
-                  Text('Privacy',
-                      style: Theme.of(context).textTheme.displaySmall),
+                  Text('Privacy', style: Theme.of(context).textTheme.displaySmall),
                   const Spacer(),
                   const SizedBox(height: 10, width: 40),
                 ],
               ),
               const SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.only(left: 20, right: 20),
-                child: Text('privacyTermsText'),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Text(
+                  privacyText,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ),
             ],
           ),

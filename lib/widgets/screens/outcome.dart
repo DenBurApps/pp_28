@@ -8,6 +8,8 @@ import '../../helpers/constants.dart';
 import '../../helpers/image/image_helper.dart';
 import '../../models/operation_model.dart';
 import '../../services/data_base.dart';
+import '../../services/navigation/route_names.dart';
+import '../../storage/storage_service.dart';
 
 class OutcomeView extends StatefulWidget {
   OutcomeView({super.key});
@@ -18,6 +20,7 @@ class OutcomeView extends StatefulWidget {
 
 class _OutcomeViewState extends State<OutcomeView> {
   final dataBase = GetIt.instance<DataBase>();
+  final _storageService = GetIt.instance<StorageService>();
 
   final TextEditingController _nameController = TextEditingController();
 
@@ -25,9 +28,34 @@ class _OutcomeViewState extends State<OutcomeView> {
 
   final TextEditingController _dateController = TextEditingController();
 
+  late int outcome = _storageService.getInt(StorageKeys.outcome) ?? 0;
+
+  Future<void> _saveOutcomeAction(int index) async {
+    if (_nameController.text.isNotEmpty &&
+        _sumController.text.isNotEmpty &&
+        _dateController.text.isNotEmpty) {
+      dataBase.addOperation(Operation(
+        symbol: '-',
+        hexString: 'F7E9E9',
+        amount: int.parse(_sumController.text),
+        name: _nameController.text,
+        date: _dateController.text,
+        icon: categoryIcons[0],
+        id: const Uuid().v4(),
+      ));
+      outcome += int.parse(_sumController.text);
+      _storageService.setInt(StorageKeys.outcome, outcome!);
+      await Navigator.of(context).pushNamed(RouteNames.homeMenu);
+      setState(() {});
+    } else {
+      return;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _storageService.init();
     dataBase.init();
   }
 
@@ -51,8 +79,7 @@ class _OutcomeViewState extends State<OutcomeView> {
                       },
                       icon: ImageHelper.getSvg(SvgNames.backIcon),
                     ),
-                    Text('Outcome',
-                        style: Theme.of(context).textTheme.labelLarge),
+                    Text('Outcome', style: Theme.of(context).textTheme.labelLarge),
                     const SizedBox(width: 50),
                   ],
                 ),
@@ -62,25 +89,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              Navigator.of(context).pop();
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[0],
-                                id: const Uuid().v4(),
-                              ));
-                            });
+                          onSaveTap: () async {
+                            _saveOutcomeAction(0);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -93,25 +108,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              Navigator.of(context).pop();
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[1],
-                                id: const Uuid().v4(),
-                              ));
-                            });
+                          onSaveTap: () async {
+                            _saveOutcomeAction(1);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -124,25 +127,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              Navigator.of(context).pop();
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[2],
-                                id: const Uuid().v4(),
-                              ));
-                            });
+                          onSaveTap: () async {
+                            _saveOutcomeAction(2);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -155,25 +146,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              Navigator.of(context).pop();
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[3],
-                                id: const Uuid().v4(),
-                              ));
-                            });
+                          onSaveTap: () async {
+                            _saveOutcomeAction(3);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -193,25 +172,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[4],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(4);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -224,25 +191,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[5],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(5);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -255,25 +210,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[6],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(6);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -286,25 +229,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[7],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(7);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -324,25 +255,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[8],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(8);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -355,25 +274,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[9],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(9);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -386,25 +293,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[10],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(10);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -417,25 +312,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[11],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(11);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -455,25 +338,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[12],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(12);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -486,25 +357,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[13],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(13);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -517,25 +376,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[14],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(14);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -548,25 +395,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[15],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(15);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -586,25 +421,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[16],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(16);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -617,25 +440,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[17],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(17);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -648,25 +459,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[18],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(18);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -679,25 +478,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[19],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(19);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -717,25 +504,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[20],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(20);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -748,25 +523,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[21],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(21);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -779,25 +542,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[22],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(22);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -810,25 +561,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[23],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(23);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -848,25 +587,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[24],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(24);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -879,25 +606,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[25],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(25);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -910,25 +625,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[26],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(26);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -941,25 +644,13 @@ class _OutcomeViewState extends State<OutcomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () {
-                            setState(() {
-                              dataBase.addOperation(Operation(
-                                symbol: '-',
-                                color: const Color(0xffF7E9E9),
-                                amount: int.parse(_sumController.text),
-                                name: _nameController.text,
-                                date: _dateController.text,
-                                icon: categoryIcons[27],
-                                id: const Uuid().v4(),
-                              ));
-                            });
-                            Navigator.of(context).pop();
+                          onSaveTap: () async {
+                            _saveOutcomeAction(27);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -1004,8 +695,7 @@ class _IncomeBottomSheetState extends State<_IncomeBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: SizedBox(
         height: 460,
         child: Padding(
@@ -1117,8 +807,7 @@ class _IncomeBottomSheetState extends State<_IncomeBottomSheet> {
                         firstDate: DateTime(1950),
                         lastDate: DateTime(2100));
                     if (pickedDate != null) {
-                      String formattedDate =
-                          DateFormat('dd.MM.yyyy').format(pickedDate);
+                      String formattedDate = DateFormat('dd.MM.yyyy').format(pickedDate);
                       setState(() {
                         widget.dateController.text = formattedDate;
                       });

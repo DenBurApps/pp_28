@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:pp_28/helpers/image/image_helper.dart';
 import 'package:pp_28/services/navigation/route_names.dart';
 
+import '../../helpers/color_helper.dart';
 import '../../logic/operations_controller.dart';
 import '../../services/data_base.dart';
 import '../../storage/storage_service.dart';
@@ -39,8 +40,12 @@ class _BalanceViewState extends State<BalanceView> {
                   balance: (_storageService.getInt(StorageKeys.budget) != null)
                       ? _storageService.getInt(StorageKeys.budget)!.toDouble()
                       : 0.0,
-                  income: 0,
-                  outcome: 0,
+                  income: (_storageService.getInt(StorageKeys.income) != null)
+                      ? _storageService.getInt(StorageKeys.income)!.toDouble()
+                      : 0.0,
+                  outcome: (_storageService.getInt(StorageKeys.outcome) != null)
+                      ? _storageService.getInt(StorageKeys.outcome)!.toDouble()
+                      : 0.0,
                   onTap: () {
                     Navigator.of(context).pushNamed(RouteNames.editBalance);
                   },
@@ -51,11 +56,12 @@ class _BalanceViewState extends State<BalanceView> {
                 const SizedBox(height: 8),
                 for (final operation in dataBase.getAllOperations())
                   _OperationCard(
-                    color: operation.color,
+                    color: HexColor(operation.hexString),
                     icon: operation.icon,
                     operationName: operation.name,
                     date: operation.date,
-                    amount: operation.amount.toString(), symbol: operation.symbol,
+                    amount: operation.amount.toString(),
+                    symbol: operation.symbol,
                   ),
                 const SizedBox(height: 110),
               ],
@@ -85,8 +91,6 @@ class _OperationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final operationController = GetIt.instance<OperationController>();
-
     return SizedBox(
       height: 55,
       child: Padding(
@@ -136,10 +140,7 @@ class _OperationCard extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            // (operationController.isIncome)
-            //     ? Text('+$amount\$')
-            //     :
-            Text('$amount\$'),
+            Text('$symbol$amount\$'),
           ],
         ),
       ),

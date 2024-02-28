@@ -23,7 +23,7 @@ class OperationAdapter extends TypeAdapter<Operation> {
       icon: fields[3] as String,
       id: fields[4] as String,
       symbol: fields[5] as String,
-      color: fields[6] as Color,
+      hexString: fields[6] as String,
     );
   }
 
@@ -44,7 +44,7 @@ class OperationAdapter extends TypeAdapter<Operation> {
       ..writeByte(5)
       ..write(obj.symbol)
       ..writeByte(6)
-      ..write(obj.color);
+      ..write(obj.hexString);
   }
 
   @override

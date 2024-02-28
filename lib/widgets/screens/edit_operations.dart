@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../helpers/color_helper.dart';
 import '../../helpers/image/image_helper.dart';
 import '../../logic/operations_controller.dart';
 import '../../services/data_base.dart';
 import '../../services/navigation/route_names.dart';
+import '../../storage/storage_service.dart';
 
 class EditOperationsView extends StatefulWidget {
   const EditOperationsView({super.key});
@@ -15,8 +17,12 @@ class EditOperationsView extends StatefulWidget {
 
 class _EditOperationsViewState extends State<EditOperationsView> {
   final dataBase = GetIt.instance<DataBase>();
+  final _storageService = GetIt.instance<StorageService>();
 
   final operationController = GetIt.instance<OperationController>();
+
+  late int income = _storageService.getInt(StorageKeys.income) ?? 0;
+  late int outcome = _storageService.getInt(StorageKeys.outcome) ?? 0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,20 +40,20 @@ class _EditOperationsViewState extends State<EditOperationsView> {
                   children: [
                     IconButton(
                       onPressed: () async {
-                        await Navigator.of(context)
-                            .pushNamed(RouteNames.homeMenu);
+                        await Navigator.of(context).pushNamed(RouteNames.homeMenu);
                         setState(() {});
                       },
                       icon: ImageHelper.getSvg(SvgNames.backIcon),
                     ),
-                    Text('Edit operations',
-                        style: Theme.of(context).textTheme.labelLarge),
+                    Text('Edit operations', style: Theme.of(context).textTheme.labelLarge),
                     const SizedBox(width: 50),
                   ],
                 ),
                 const SizedBox(height: 20),
                 for (final operation in dataBase.getAllOperations())
                   _OperationCard(
+                    symbol: operation.symbol,
+                    color: HexColor(operation.hexString),
                     amount: operation.amount.toString(),
                     icon: operation.icon,
                     operationName: operation.name,
@@ -55,6 +61,12 @@ class _EditOperationsViewState extends State<EditOperationsView> {
                     onDeleteOperationTap: () {
                       setState(() {
                         dataBase.deleteOperation(operation.id);
+                        (operation.symbol == '+')
+                            ? income -= operation.amount
+                            : outcome -= operation.amount;
+                        (operation.symbol == '+')
+                            ? _storageService.setInt(StorageKeys.income, income!)
+                            : _storageService.setInt(StorageKeys.outcome, outcome!);
                       });
                     },
                   ),
@@ -74,13 +86,17 @@ class _OperationCard extends StatelessWidget {
       required this.operationName,
       required this.date,
       required this.amount,
-      required this.onDeleteOperationTap});
+      required this.onDeleteOperationTap,
+      required this.color,
+      required this.symbol});
 
   final String icon;
   final String operationName;
   final String date;
   final String amount;
+  final String symbol;
   final VoidCallback onDeleteOperationTap;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -95,9 +111,9 @@ class _OperationCard extends StatelessWidget {
                 Container(
                   width: 40,
                   height: 40,
-                  decoration: const BoxDecoration(
-                    color: Colors.indigoAccent,
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -137,10 +153,8 @@ class _OperationCard extends StatelessWidget {
                 const Spacer(),
                 Row(
                   children: [
-                    Text('$amount\$'),
-                    IconButton(
-                        onPressed: onDeleteOperationTap,
-                        icon: Icon(Icons.delete))
+                    Text('$symbol$amount\$'),
+                    IconButton(onPressed: onDeleteOperationTap, icon: const Icon(Icons.delete))
                   ],
                 ),
               ],

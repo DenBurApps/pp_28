@@ -20,4 +20,5 @@ class RouteNames {
   static const outcome = '/outcome';
   static const editOperations = '/edit_operations';
   static const myWallet = '/my_wallet';
+  static const statistics = '/statistics';
 }

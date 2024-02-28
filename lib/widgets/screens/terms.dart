@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../helpers/constants.dart';
 
 class TermsView extends StatelessWidget {
   const TermsView({super.key});
@@ -22,16 +23,18 @@ class TermsView extends StatelessWidget {
                       },
                       icon: const Icon(Icons.chevron_left_rounded)),
                   const Spacer(),
-                  Text('Terms',
-                      style: Theme.of(context).textTheme.displaySmall),
+                  Text('Terms', style: Theme.of(context).textTheme.displaySmall),
                   const Spacer(),
                   const SizedBox(height: 10, width: 40),
                 ],
               ),
               const SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.only(left: 20, right: 20),
-                child: Text('privacyTermsText'),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Text(
+                  termsText,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ),
             ],
           ),

@@ -18,7 +18,7 @@ class Operation extends HiveObject {
   @HiveField(5)
   final String symbol;
   @HiveField(6)
-  final Color color;
+  final String hexString;
 
   Operation( {
     required this.amount,
@@ -27,6 +27,6 @@ class Operation extends HiveObject {
     required this.icon,
     required this.id,
     required this.symbol,
-    required this.color,
+    required this.hexString,
   });
 }

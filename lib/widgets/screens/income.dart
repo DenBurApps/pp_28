@@ -9,6 +9,7 @@ import '../../helpers/image/image_helper.dart';
 import '../../models/operation_model.dart';
 import '../../services/data_base.dart';
 import '../../services/navigation/route_names.dart';
+import '../../storage/storage_service.dart';
 
 class IncomeView extends StatefulWidget {
   IncomeView({super.key});
@@ -19,12 +20,36 @@ class IncomeView extends StatefulWidget {
 
 class _IncomeViewState extends State<IncomeView> {
   final dataBase = GetIt.instance<DataBase>();
+  final _storageService = GetIt.instance<StorageService>();
 
   final TextEditingController _nameController = TextEditingController();
 
   final TextEditingController _sumController = TextEditingController();
 
   final TextEditingController _dateController = TextEditingController();
+  late int income = _storageService.getInt(StorageKeys.income) ?? 0;
+
+  Future<void> _saveIncomeAction(int index) async {
+    if (_nameController.text.isNotEmpty &&
+        _sumController.text.isNotEmpty &&
+        _dateController.text.isNotEmpty) {
+      dataBase.addOperation(Operation(
+        symbol: '+',
+        hexString: 'E9F7F2',
+        amount: int.parse(_sumController.text),
+        name: _nameController.text,
+        date: _dateController.text,
+        icon: categoryIcons[index],
+        id: const Uuid().v4(),
+      ));
+      income += int.parse(_sumController.text);
+      _storageService.setInt(StorageKeys.outcome, income!);
+      await Navigator.of(context).pushNamed(RouteNames.homeMenu);
+      setState(() {});
+    } else {
+      return;
+    }
+  }
 
   @override
   void initState() {
@@ -52,8 +77,7 @@ class _IncomeViewState extends State<IncomeView> {
                       },
                       icon: ImageHelper.getSvg(SvgNames.backIcon),
                     ),
-                    Text('Income',
-                        style: Theme.of(context).textTheme.labelLarge),
+                    Text('Income', style: Theme.of(context).textTheme.labelLarge),
                     const SizedBox(width: 50),
                   ],
                 ),
@@ -63,25 +87,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[0],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(0);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -94,25 +106,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[1],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(1);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -125,25 +125,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[2],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(2);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -156,25 +144,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[3],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(3);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -194,25 +170,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[4],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(4);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -225,25 +189,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[5],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(5);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -256,25 +208,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[6],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(6);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -287,25 +227,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[7],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(7);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -325,25 +253,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[8],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(8);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -356,25 +272,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[9],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(9);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -387,25 +291,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[10],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(10);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -418,25 +310,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[11],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(11);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -456,25 +336,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[12],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(12);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -487,25 +355,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[13],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(13);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -518,25 +374,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[14],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(14);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -549,25 +393,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[15],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(15);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -587,25 +419,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[16],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(16);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -618,25 +438,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[17],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(17);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -649,25 +457,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[18],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(18);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -680,25 +476,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[19],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(19);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -718,25 +502,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[20],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(20);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -749,25 +521,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[21],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(21);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -780,25 +540,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[22],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(22);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -811,25 +559,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[23],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(23);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -849,25 +585,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[24],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(24);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -880,25 +604,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[25],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(25);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -911,25 +623,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[26],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(26);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -942,25 +642,13 @@ class _IncomeViewState extends State<IncomeView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return _IncomeBottomSheet(
-                          onSaveTap: () async {
-                            dataBase.addOperation(Operation(
-                              symbol: '+',
-                              color: const Color(0xffE9F7F2),
-                              amount: int.parse(_sumController.text),
-                              name: _nameController.text,
-                              date: _dateController.text,
-                              icon: categoryIcons[27],
-                              id: const Uuid().v4(),
-                            ));
-                            await Navigator.of(context)
-                                .pushNamed(RouteNames.homeMenu);
-                            setState(() {});
+                          onSaveTap: () {
+                            _saveIncomeAction(27);
                           },
                           nameController: _nameController,
                           sumController: _sumController,
@@ -1005,8 +693,7 @@ class _IncomeBottomSheetState extends State<_IncomeBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: SizedBox(
         height: 460,
         child: Padding(
@@ -1118,8 +805,7 @@ class _IncomeBottomSheetState extends State<_IncomeBottomSheet> {
                         firstDate: DateTime(1950),
                         lastDate: DateTime(2100));
                     if (pickedDate != null) {
-                      String formattedDate =
-                          DateFormat('dd.MM.yyyy').format(pickedDate);
+                      String formattedDate = DateFormat('dd.MM.yyyy').format(pickedDate);
                       setState(() {
                         widget.dateController.text = formattedDate;
                       });

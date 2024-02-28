@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../helpers/color_helper.dart';
 import '../../helpers/image/image_helper.dart';
 import '../../logic/operations_controller.dart';
 import '../../services/data_base.dart';
@@ -26,10 +27,8 @@ class _EditBalanceViewState extends State<EditBalanceView> {
   final TextEditingController _balanceController = TextEditingController();
 
   void _editBalance() {
-    setState(() {
-      _budget = int.parse(_balanceController.text);
-      _storageService.setInt(StorageKeys.budget, _budget);
-    });
+    _budget = int.parse(_balanceController.text);
+    _storageService.setInt(StorageKeys.budget, _budget);
     Navigator.of(context).pop();
   }
 
@@ -60,8 +59,7 @@ class _EditBalanceViewState extends State<EditBalanceView> {
                       },
                       icon: ImageHelper.getSvg(SvgNames.backIcon),
                     ),
-                    Text('Wallet',
-                        style: Theme.of(context).textTheme.labelLarge),
+                    Text('Wallet', style: Theme.of(context).textTheme.labelLarge),
                     const SizedBox(width: 50),
                   ],
                 ),
@@ -74,19 +72,17 @@ class _EditBalanceViewState extends State<EditBalanceView> {
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(30.0)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
                         return Padding(
-                          padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                          padding:
+                              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                           child: SizedBox(
                             height: 300,
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
@@ -110,30 +106,25 @@ class _EditBalanceViewState extends State<EditBalanceView> {
                                     alignment: Alignment.bottomLeft,
                                     child: Text(
                                       'Edit monthly budget',
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
+                                      style: Theme.of(context).textTheme.bodySmall,
                                     ),
                                   ),
                                   const SizedBox(height: 5),
                                   TextField(
                                     inputFormatters: [
-                                      FilteringTextInputFormatter.allow(
-                                          RegExp(r'[0-9]')),
+                                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                                       LengthLimitingTextInputFormatter(9),
                                     ],
                                     controller: _balanceController,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(16.0),
+                                        borderRadius: BorderRadius.circular(16.0),
                                       ),
                                       focusedBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.black54, width: 1.0),
+                                        borderSide: BorderSide(color: Colors.black54, width: 1.0),
                                       ),
                                       enabledBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.black12, width: 1),
+                                        borderSide: BorderSide(color: Colors.black12, width: 1),
                                       ),
                                       hintText: 'Enter amount',
                                     ),
@@ -153,8 +144,7 @@ class _EditBalanceViewState extends State<EditBalanceView> {
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyLarge!
-                                                  .copyWith(
-                                                      color: Colors.white)),
+                                                  .copyWith(color: Colors.white)),
                                         );
                                       }),
                                   const SizedBox(height: 20),
@@ -166,34 +156,32 @@ class _EditBalanceViewState extends State<EditBalanceView> {
                       },
                     );
                   },
-                  onStatisticsTap: () {},
+                  onStatisticsTap: () {
+                    Navigator.of(context).pushNamed(RouteNames.statistics);
+                  },
                 ),
                 const SizedBox(height: 16),
-                Text('Add operations',
-                    style: Theme.of(context).textTheme.bodyLarge),
+                Text('Add operations', style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(height: 16),
                 _TransactionsButtons(
                   onIncomeTap: () {
-                    // operationController.isIncome = true;
                     Navigator.of(context).pushNamed(RouteNames.income);
                   },
                   onOutcomeTap: () {
-                    // operationController.isIncome = false;
                     Navigator.of(context).pushNamed(RouteNames.outcome);
                   },
                 ),
                 const SizedBox(height: 16),
-                Text('Last operations',
-                    style: Theme.of(context).textTheme.bodyLarge),
+                Text('Last operations', style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(height: 16),
                 for (final operation in dataBase.getAllOperations())
                   _OperationCard(
+                    color: HexColor(operation.hexString),
                     icon: operation.icon,
                     operationName: operation.name,
                     date: operation.date,
                     onEditOperationTap: () {
-                      Navigator.of(context)
-                          .pushNamed(RouteNames.editOperations);
+                      Navigator.of(context).pushNamed(RouteNames.editOperations);
                     },
                   ),
                 const SizedBox(height: 20),
@@ -213,12 +201,14 @@ class _OperationCard extends StatefulWidget {
     required this.operationName,
     required this.date,
     required this.onEditOperationTap,
+    required this.color,
   });
 
   final String icon;
   final String operationName;
   final String date;
   final VoidCallback onEditOperationTap;
+  final Color color;
 
   @override
   State<_OperationCard> createState() => _OperationCardState();
@@ -240,17 +230,15 @@ class _OperationCardState extends State<_OperationCard> {
             ),
           ),
           child: Padding(
-            padding:
-                const EdgeInsets.only(top: 8, bottom: 8, right: 20, left: 12),
+            padding: const EdgeInsets.only(top: 8, bottom: 8, right: 20, left: 12),
             child: Row(
               children: [
                 Container(
                   width: 40,
                   height: 40,
-                  decoration: const BoxDecoration(
-                    color: Color(0xffE9F7F2),
-                    // : const Color(0xffF7E9E9),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  decoration: BoxDecoration(
+                    color: widget.color,
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -266,10 +254,8 @@ class _OperationCardState extends State<_OperationCard> {
                       width: MediaQuery.of(context).size.width / 1.8,
                       child: Text(
                         widget.operationName,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: Colors.white),
+                        style:
+                            Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -277,15 +263,12 @@ class _OperationCardState extends State<_OperationCard> {
                     const SizedBox(height: 3),
                     Row(
                       children: [
-                        ImageHelper.getSvg(SvgNames.calendarIcon,
-                            color: Colors.grey),
+                        ImageHelper.getSvg(SvgNames.calendarIcon, color: Colors.grey),
                         const SizedBox(width: 5),
                         Text(
                           widget.date,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(color: Colors.grey),
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey),
                         ),
                       ],
                     )
@@ -313,8 +296,7 @@ class _OperationCardState extends State<_OperationCard> {
 }
 
 class _TransactionsButtons extends StatelessWidget {
-  const _TransactionsButtons(
-      {super.key, required this.onOutcomeTap, required this.onIncomeTap});
+  const _TransactionsButtons({super.key, required this.onOutcomeTap, required this.onIncomeTap});
 
   final VoidCallback onOutcomeTap;
   final VoidCallback onIncomeTap;
@@ -339,8 +321,7 @@ class _TransactionsButtons extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Income',
-                        style: Theme.of(context).textTheme.displaySmall),
+                    Text('Income', style: Theme.of(context).textTheme.displaySmall),
                     const SizedBox(height: 10),
                     Container(
                       width: 38,
@@ -377,8 +358,7 @@ class _TransactionsButtons extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Outcome',
-                        style: Theme.of(context).textTheme.displaySmall),
+                    Text('Outcome', style: Theme.of(context).textTheme.displaySmall),
                     const SizedBox(height: 10),
                     Container(
                       width: 38,
@@ -432,10 +412,7 @@ class _BalanceCard extends StatelessWidget {
           children: [
             Text(
               'Monthly budget',
-              style: Theme.of(context)
-                  .textTheme
-                  .displayMedium!
-                  .copyWith(color: Colors.white54),
+              style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white54),
             ),
             Row(
               children: [
@@ -482,10 +459,8 @@ class _BalanceCard extends StatelessWidget {
                     children: [
                       Text(
                         'Generate statistic’s',
-                        style: Theme.of(context)
-                            .textTheme
-                            .displaySmall!
-                            .copyWith(color: Colors.white),
+                        style:
+                            Theme.of(context).textTheme.displaySmall!.copyWith(color: Colors.white),
                       ),
                       const Spacer(),
                       Container(

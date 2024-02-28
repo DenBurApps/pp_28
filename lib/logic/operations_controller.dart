@@ -8,6 +8,7 @@ import '../services/data_base.dart';
 class OperationController extends ChangeNotifier {
   final dataBase = GetIt.instance<DataBase>();
 
+
   BankCard? bankCard;
   Operation? operation;
 
