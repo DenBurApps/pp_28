@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Wallet app',
+      title: 'SecureWalletPass',
       theme: DefaultThemeGetter.get(),
       routes: Routes.get(context),
       initialRoute: RouteNames.splash,

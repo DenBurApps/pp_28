@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:pp_28/helpers/text_helper.dart';
 
-import '../../helpers/constants.dart';
 
 class PrivacyView extends StatelessWidget {
   const PrivacyView({super.key});
@@ -23,17 +23,17 @@ class PrivacyView extends StatelessWidget {
                       },
                       icon: const Icon(Icons.chevron_left_rounded)),
                   const Spacer(),
-                  Text('Privacy', style: Theme.of(context).textTheme.displaySmall),
+                  Text('Privacy',
+                      style: Theme.of(context).textTheme.displaySmall),
                   const Spacer(),
                   const SizedBox(height: 10, width: 40),
                 ],
               ),
               const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Text(
-                  privacyText,
-                  style: Theme.of(context).textTheme.bodySmall,
+              const Padding(
+                padding: EdgeInsets.only(left: 20, right: 20),
+                child: MarkdownBody(
+                  data: TextHelper.privacy,
                 ),
               ),
             ],

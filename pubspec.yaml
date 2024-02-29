@@ -25,13 +25,32 @@ dependencies:
   shared_preferences: ^2.2.2
   connectivity_plus: ^5.0.2
   in_app_review: ^2.0.8
+  flutter_markdown: ^0.6.20
+  webview_flutter_wkwebview: ^3.12.0
+  webview_flutter_android: ^3.15.0
+  webview_flutter: ^4.7.0
+  firebase_core: ^2.25.5
+  firebase_crashlytics: ^3.4.16
+  firebase_remote_config: ^4.3.15
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^3.0.1
-  flutter_native_splash: ^2.3.7
+
+
+flutter_native_splash:
+  color: "#1B2B38"
+  image: assets/images/icon.png
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/icon.png"
 
 flutter:
   uses-material-design: true
