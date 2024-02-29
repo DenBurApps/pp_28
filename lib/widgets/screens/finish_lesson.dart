@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../helpers/image/image_helper.dart';
 import '../../services/navigation/route_names.dart';
+import '../../storage/storage_service.dart';
 
 class FinishLessonView extends StatefulWidget {
   FinishLessonView({super.key});
@@ -12,6 +14,19 @@ class FinishLessonView extends StatefulWidget {
 }
 
 class _FinishLessonViewState extends State<FinishLessonView> {
+
+  final _storageService = GetIt.instance<StorageService>();
+  late final _completedLessons;
+
+  @override
+  void initState() {
+    _completedLessons =
+        (_storageService.getStringList(StorageKeys.completedLessons) ??
+                <String>[])
+            .toSet();
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     final index =
@@ -82,6 +97,10 @@ class _FinishLessonViewState extends State<FinishLessonView> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
+setState(() {
+                            _completedLessons.add(i.toString());
+                            _storageService.setStringList(StorageKeys.completedLessons, _completedLessons.toList());
+                          });
                       Navigator.of(context).pushNamed(
                         RouteNames.quiz,
                         arguments: {'index': i},
@@ -97,7 +116,6 @@ class _FinishLessonViewState extends State<FinishLessonView> {
                   ),
                   TextButton(
                     onPressed: () {
-                      /// send event to nav to courses
                       Navigator.of(context).pushNamed(RouteNames.homeMenu);
                     },
                     child: Text('Not now',

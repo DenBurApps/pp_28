@@ -51,7 +51,8 @@ class _BalanceViewState extends State<BalanceView> {
                   },
                 ),
                 const SizedBox(height: 16),
-                Text('Last operations',
+                (dataBase.getAllOperations().isNotEmpty) ? Text('Last operations',
+                    style: Theme.of(context).textTheme.bodyLarge) : Text('No operations yet',
                     style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(height: 8),
                 for (final operation in dataBase.getAllOperations())
@@ -224,7 +225,10 @@ class _BalanceCard extends StatelessWidget {
                                   children: [
                                     SizedBox(
                                       width: 60,
-                                      child: Text(
+                                      child: (income < 0) ? Text('\$0.0', style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall) :
+                                      Text(
                                           '\$${income.toStringAsFixed(2)}',
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
@@ -232,6 +236,10 @@ class _BalanceCard extends StatelessWidget {
                                               .textTheme
                                               .displaySmall),
                                     ),
+                                    (income.isNaN || income < 0) ? Text('+0.0%', style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall!
+                                            .copyWith(color: Colors.black45)) :
                                     Text(
                                         '+${(income / balance * 100).toStringAsFixed(1)}%',
                                         style: Theme.of(context)
@@ -285,7 +293,10 @@ class _BalanceCard extends StatelessWidget {
                                   children: [
                                     SizedBox(
                                       width: 70,
-                                      child: Text(
+                                      child: (outcome < 0) ? Text('\$0.0', style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall) :
+                                      Text(
                                           '\$${outcome.toStringAsFixed(2)}',
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
@@ -293,6 +304,10 @@ class _BalanceCard extends StatelessWidget {
                                               .textTheme
                                               .displaySmall),
                                     ),
+                                    (outcome.isNaN || outcome < 0) ? Text('-0.0%', style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall!
+                                            .copyWith(color: Colors.black45)) :
                                     Text(
                                         '-${(outcome / balance * 100).toStringAsFixed(1)}%',
                                         style: Theme.of(context)

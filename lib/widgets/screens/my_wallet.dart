@@ -138,11 +138,17 @@ class _MyWalletViewState extends State<MyWalletView> {
                       InkWell(
                         onTap: () {
                           setState(() {
-                            final card = dataBase.getAllBankCards()[_cardIndex];
-                            Navigator.of(context).pushNamed(
+                            
+                            if (dataBase.getAllBankCards().isEmpty) {
+                              return;
+                            } else {
+                              final card = dataBase.getAllBankCards()[_cardIndex];
+                              Navigator.of(context).pushNamed(
                               RouteNames.editCard,
                               arguments: card,
                             );
+                            }
+                          
                           });
                         },
                         child: Container(
@@ -169,8 +175,12 @@ class _MyWalletViewState extends State<MyWalletView> {
                       InkWell(
                         onTap: () {
                           setState(() {
-                            final card = dataBase.getAllBankCards()[_cardIndex];
-                            dataBase.deleteBankCard(card.id);
+                            if (dataBase.getAllBankCards().isEmpty) {
+                              return;
+                            } else {
+                              final card = dataBase.getAllBankCards()[_cardIndex];
+                              dataBase.deleteBankCard(card.id);
+                              }
                           });
                         },
                         child: Container(
@@ -199,7 +209,9 @@ class _MyWalletViewState extends State<MyWalletView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 20),
+                    (dataBase.getAllBankCards().isNotEmpty) ? 
                     Text('All cards',
+                        style: Theme.of(context).textTheme.bodyLarge) : Text('No cards yet',
                         style: Theme.of(context).textTheme.bodyLarge),
                     const SizedBox(height: 10),
                     for (final card in dataBase.getAllBankCards())

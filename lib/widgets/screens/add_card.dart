@@ -342,7 +342,10 @@ class _AddCardViewState extends State<AddCardView> {
               ),
               child: ElevatedButton(
                 onPressed: () {
-                  setState(() {
+                  if (cardBankController.text.isEmpty && cardBalanceController.text.isEmpty && cardCvvController.text.isEmpty && cardNameController.text.isEmpty && cardNumberController.text.isEmpty) {
+                    return;
+                  } else {
+setState(() {
                     dataBase.addBankCard(BankCard(
                       balance: cardBalanceController.text,
                       number: int.parse(cardNumberController.text),
@@ -355,6 +358,8 @@ class _AddCardViewState extends State<AddCardView> {
                     _refresh();
                   });
                   Navigator.of(context).pop();
+                  }
+                
                 },
                 child: Text(
                   'Save',

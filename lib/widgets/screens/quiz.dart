@@ -108,7 +108,7 @@ class _QuizViewState extends State<QuizView> {
               children: [
                 const SizedBox(height: 30),
                 Text(
-                  'Question №${i + 1}',
+                  'Lesson №${i + 1}',
                   style: Theme.of(context)
                       .textTheme
                       .labelLarge!
@@ -320,7 +320,6 @@ class QuizResultView extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        /// send event to nav to courses
                         Navigator.of(context).pushNamed(RouteNames.homeMenu);
                       },
                       child: Text(

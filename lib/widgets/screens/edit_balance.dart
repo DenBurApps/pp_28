@@ -172,7 +172,9 @@ class _EditBalanceViewState extends State<EditBalanceView> {
                   },
                 ),
                 const SizedBox(height: 16),
-                Text('Last operations', style: Theme.of(context).textTheme.bodyLarge),
+                (dataBase.getAllOperations().isNotEmpty) ? Text('Last operations',
+                    style: Theme.of(context).textTheme.bodyLarge) : Text('No operations yet',
+                    style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(height: 16),
                 for (final operation in dataBase.getAllOperations())
                   _OperationCard(
@@ -397,7 +399,7 @@ class _BalanceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 220,
+      height: 130,
       decoration: const BoxDecoration(
         color: Color(0xff1C1C1C),
         borderRadius: BorderRadius.all(
@@ -442,46 +444,46 @@ class _BalanceCard extends StatelessWidget {
                 ),
               ],
             ),
-            const Divider(color: Colors.white54),
-            InkWell(
-              onTap: onStatisticsTap,
-              child: Container(
-                height: 58,
-                decoration: const BoxDecoration(
-                  color: Color(0xff464645),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(15),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Generate statistic’s',
-                        style:
-                            Theme.of(context).textTheme.displaySmall!.copyWith(color: Colors.white),
-                      ),
-                      const Spacer(),
-                      Container(
-                        width: 38,
-                        height: 38,
-                        decoration: const BoxDecoration(
-                          color: Color(0xff1C1C1C),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ImageHelper.getSvg(SvgNames.statisticsIcon),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            // const Divider(color: Colors.white54),
+            // InkWell(
+            //   onTap: onStatisticsTap,
+            //   child: Container(
+            //     height: 58,
+            //     decoration: const BoxDecoration(
+            //       color: Color(0xff464645),
+            //       borderRadius: BorderRadius.all(
+            //         Radius.circular(15),
+            //       ),
+            //     ),
+            //     child: Padding(
+            //       padding: const EdgeInsets.symmetric(horizontal: 10),
+            //       child: Row(
+            //         children: [
+            //           Text(
+            //             'Generate statistic’s',
+            //             style:
+            //                 Theme.of(context).textTheme.displaySmall!.copyWith(color: Colors.white),
+            //           ),
+            //           const Spacer(),
+            //           Container(
+            //             width: 38,
+            //             height: 38,
+            //             decoration: const BoxDecoration(
+            //               color: Color(0xff1C1C1C),
+            //               borderRadius: BorderRadius.all(
+            //                 Radius.circular(10),
+            //               ),
+            //             ),
+            //             child: Padding(
+            //               padding: const EdgeInsets.all(10.0),
+            //               child: ImageHelper.getSvg(SvgNames.statisticsIcon),
+            //             ),
+            //           )
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

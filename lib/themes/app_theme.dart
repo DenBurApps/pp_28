@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pp_28/themes/custom_colors.dart';
 
 class DefaultThemeGetter {
   static ThemeData get() {
@@ -79,7 +80,7 @@ class DefaultThemeGetter {
             ),
           ),
           backgroundColor: MaterialStateProperty.resolveWith(
-                (states) {
+            (states) {
               if (states.contains(MaterialState.disabled)) {
                 return primary.withOpacity(0.3);
               }
@@ -119,6 +120,9 @@ class DefaultThemeGetter {
         onPrimary: onPrimary,
         onSecondary: Colors.white,
       ),
+      extensions: const [
+        CustomColors.value,
+      ],
     );
   }
 }
