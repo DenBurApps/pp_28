@@ -756,6 +756,7 @@ class _IncomeBottomSheetState extends State<_IncomeBottomSheet> {
                 ),
                 const SizedBox(height: 10),
                 TextField(
+                  keyboardType: TextInputType.number,
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                     LengthLimitingTextInputFormatter(9),

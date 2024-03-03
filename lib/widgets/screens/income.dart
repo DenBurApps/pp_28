@@ -43,7 +43,7 @@ class _IncomeViewState extends State<IncomeView> {
         id: const Uuid().v4(),
       ));
       income += int.parse(_sumController.text);
-      _storageService.setInt(StorageKeys.outcome, income!);
+      _storageService.setInt(StorageKeys.income, income!);
       await Navigator.of(context).pushNamed(RouteNames.homeMenu);
       setState(() {});
     } else {

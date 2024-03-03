@@ -229,23 +229,14 @@ class _BalanceCard extends StatelessWidget {
                                               .textTheme
                                               .displaySmall) :
                                       Text(
-                                          '\$${income.toStringAsFixed(2)}',
+                                          '+${income.toStringAsFixed(2)}\$',
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: Theme.of(context)
                                               .textTheme
                                               .displaySmall),
                                     ),
-                                    (income.isNaN || income < 0) ? Text('+0.0%', style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall!
-                                            .copyWith(color: Colors.black45)) :
-                                    Text(
-                                        '+${(income / balance * 100).toStringAsFixed(1)}%',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall!
-                                            .copyWith(color: Colors.black45)),
+                                
                                   ],
                                 ),
                                 const Spacer(),
@@ -297,23 +288,14 @@ class _BalanceCard extends StatelessWidget {
                                               .textTheme
                                               .displaySmall) :
                                       Text(
-                                          '\$${outcome.toStringAsFixed(2)}',
+                                          '-${outcome.toStringAsFixed(2)}\$',
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: Theme.of(context)
                                               .textTheme
                                               .displaySmall),
                                     ),
-                                    (outcome.isNaN || outcome < 0) ? Text('-0.0%', style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall!
-                                            .copyWith(color: Colors.black45)) :
-                                    Text(
-                                        '-${(outcome / balance * 100).toStringAsFixed(1)}%',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall!
-                                            .copyWith(color: Colors.black45)),
+                                  
                                   ],
                                 ),
                                 const Spacer(),

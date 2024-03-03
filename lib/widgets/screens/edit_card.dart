@@ -156,7 +156,7 @@ class _EditCardViewState extends State<EditCardView> {
                       child: TextField(
                         //mask: "#### #### #### ####",
                         controller: cardNumberController,
-                        //keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                           LengthLimitingTextInputFormatter(16),
