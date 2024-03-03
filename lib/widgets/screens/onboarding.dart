@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:pp_28/storage/storage_service.dart';
 import '../../../helpers/image/image_helper.dart';
 import '../../../services/navigation/route_names.dart';
 
@@ -11,12 +13,17 @@ class OnboardingView extends StatefulWidget {
 }
 
 class _OnboardingViewState extends State<OnboardingView> {
+  final _storageService = GetIt.instance<StorageService>();
   var _currentStep = 0;
 
   final _images = [
     ImageHelper.getImage(ImageNames.onboarding_1).image,
     ImageHelper.getImage(ImageNames.onboarding_2).image,
   ];
+
+  void _init() {
+    _storageService.setBool(StorageKeys.seenOnboarding, true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         onTap: () {
           setState(() {
             if (_currentStep == 1) {
-              Navigator.of(context).pushNamed(RouteNames.homeMenu);
+              Navigator.of(context).pushReplacementNamed(RouteNames.privacyAgreement);
               return;
             }
             _currentStep++;
@@ -89,7 +96,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 60, left: 30, right: 50),
+                        padding:
+                            const EdgeInsets.only(top: 60, left: 30, right: 50),
                         child: Text(
                           'Your personal financial assistant in your pocket!',
                           style: Theme.of(context).textTheme.displayLarge,

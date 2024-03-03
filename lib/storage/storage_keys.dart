@@ -1,7 +1,7 @@
 part of 'storage_service.dart';
 
 class StorageKeys {
-  static const String isFirstLaunch = 'isFirstLaunch';
+  static const String seenOnboarding = 'seenOnboarding';
   static const String completedLessons = 'completedLessons';
   static const String budget = 'budget';
   static const String income = 'income';

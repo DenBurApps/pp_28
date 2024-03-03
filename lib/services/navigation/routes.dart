@@ -4,6 +4,7 @@ import 'package:pp_28/widgets/screens/edit_balance.dart';
 import 'package:pp_28/widgets/screens/edit_operations.dart';
 import 'package:pp_28/widgets/screens/income.dart';
 import 'package:pp_28/widgets/screens/my_wallet.dart';
+import 'package:pp_28/widgets/screens/privacy_agreement_screen.dart';
 import 'package:pp_28/widgets/screens/statistics.dart';
 import '../../widgets/screens/edit_card.dart';
 import '../../widgets/screens/outcome.dart';
@@ -46,6 +47,7 @@ class Routes {
       RouteNames.editOperations: (context) => const EditOperationsView(),
       RouteNames.myWallet: (context) => const MyWalletView(),
       RouteNames.statistics: (context) => StatisticsView(),
+      RouteNames.privacyAgreement:(context) => const PrivacyAgreementView(), 
     };
   }
 }

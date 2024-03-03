@@ -1,5 +1,5 @@
 class RouteNames {
-  static const splash = '/splash';
+  static const splash = '/';
   static const home = '/home';
   static const noConnection = '/no-connection';
   static const onboarding = '/onboarding';
@@ -21,4 +21,5 @@ class RouteNames {
   static const editOperations = '/edit_operations';
   static const myWallet = '/my_wallet';
   static const statistics = '/statistics';
+  static const privacyAgreement = '/privacyAgreement';
 }

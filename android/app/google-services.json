@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "956145307121",
+    "project_id": "pp28koshelmargp",
+    "storage_bucket": "pp28koshelmargp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956145307121:android:6ddbfa5c492a1611478850",
+        "android_client_info": {
+          "package_name": "com.example.pp_28"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCciN8sjmH1uir3BiBrXrM3JEnkbikdKM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
