@@ -21,6 +21,12 @@ class _OnboardingViewState extends State<OnboardingView> {
     ImageHelper.getImage(ImageNames.onboarding_2).image,
   ];
 
+  @override
+  void initState() {
+    _init();
+    super.initState();
+  }
+
   void _init() {
     _storageService.setBool(StorageKeys.seenOnboarding, true);
   }
