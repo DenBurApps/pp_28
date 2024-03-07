@@ -6,5 +6,5 @@ class StorageKeys {
   static const String budget = 'budget';
   static const String income = 'income';
   static const String outcome = 'outcome';
-  static const String acceptedPrivacy = 'acceptedPrivacy';
+  static const String seenPrivacyAgreement = 'seenPrivacyAgreement';
 }

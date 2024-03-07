@@ -3,7 +3,7 @@ description: "A new Flutter project."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.1+1
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -44,8 +44,8 @@ dev_dependencies:
 
 
 flutter_native_splash:
-  color: "#1B2B38"
-  image: assets/images/icon.png
+  color: "#ffffff"
+  image: assets/images/icon_rounded.png
 
 flutter_launcher_icons:
   android: true

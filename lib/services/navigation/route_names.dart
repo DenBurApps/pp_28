@@ -22,4 +22,5 @@ class RouteNames {
   static const myWallet = '/my_wallet';
   static const statistics = '/statistics';
   static const privacyAgreement = '/privacyAgreement';
+  static const agreement = '/agreement';
 }

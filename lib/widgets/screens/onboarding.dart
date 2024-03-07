@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:pp_28/helpers/dialog_helper.dart';
+import 'package:pp_28/models/arguments.dart';
 import 'package:pp_28/storage/storage_service.dart';
+import 'package:pp_28/widgets/screens/agreement.dart';
 import '../../../helpers/image/image_helper.dart';
 import '../../../services/navigation/route_names.dart';
 
@@ -31,20 +34,33 @@ class _OnboardingViewState extends State<OnboardingView> {
     _storageService.setBool(StorageKeys.seenOnboarding, true);
   }
 
+  void _progress() {
+    if (_currentStep == 1) {
+      _storageService.setBool(StorageKeys.seenPrivacyAgreement, true);
+      DialogHelper.showPrivacyAgreementDialog(
+        context,
+        yes: () => Navigator.of(context).pushReplacementNamed(
+          RouteNames.agreement,
+          arguments: AgreementViewArguments(
+            agreementType: AgreementType.privacy,
+            usePrivacyAgreement: true,
+          ),
+        ),
+        no: () => Navigator.of(context).pushReplacementNamed(
+          RouteNames.homeMenu,
+        ),
+      );
+    } else {
+      setState(() => _currentStep++);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: InkWell(
-        onTap: () {
-          setState(() {
-            if (_currentStep == 1) {
-              Navigator.of(context).pushReplacementNamed(RouteNames.privacyAgreement);
-              return;
-            }
-            _currentStep++;
-          });
-        },
+        onTap: _progress,
         child: (_currentStep == 0)
             ? Stack(
                 children: [

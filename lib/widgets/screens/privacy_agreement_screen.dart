@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:pp_28/services/navigation/route_names.dart';
 import 'package:pp_28/services/remote_config_service.dart';
-import 'package:pp_28/storage/storage_service.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // #docregion platform_imports
 // Import for Android features.
@@ -27,11 +25,9 @@ class PrivacyAgreementView extends StatefulWidget {
 
 class _PrivacyAgreementViewState extends State<PrivacyAgreementView> {
   late final WebViewController _controller;
-  final _storageService = GetIt.I<StorageService>();
   final _remoteConfig = GetIt.I<RemoteConfigService>();
 
   var isLoading = true;
-  var agreeButton = true;
 
   String get _cssCode {
     if (Platform.isAndroid) {
@@ -57,15 +53,11 @@ class _PrivacyAgreementViewState extends State<PrivacyAgreementView> {
       document.head.appendChild(style);
     """;
 
-  bool _parseShowAgreeButton(String input) =>
-      input.contains('showAgreebutton') || input.contains('showAgreeButton');
-
   @override
   void initState() {
     super.initState();
 
-    final privacyLink = _remoteConfig.getString(ConfigKey.privacyLink);
-    setState(() => agreeButton = _parseShowAgreeButton(privacyLink));
+    final link = _remoteConfig.getString(ConfigKey.link);
 
     // #docregion platform_features
     late final PlatformWebViewControllerCreationParams params;
@@ -111,9 +103,6 @@ class _PrivacyAgreementViewState extends State<PrivacyAgreementView> {
             }
           },
           onNavigationRequest: (NavigationRequest request) {
-            if (request.url.contains('showAgreebutton')) {
-              setState(() => agreeButton = true);
-            }
             log('allowing navigation to ${request.url}');
             return NavigationDecision.navigate;
           },
@@ -122,7 +111,7 @@ class _PrivacyAgreementViewState extends State<PrivacyAgreementView> {
           },
         ),
       )
-      ..loadRequest(Uri.parse(privacyLink));
+      ..loadRequest(Uri.parse(link));
 
     // #docregion platform_features
     if (controller.platform is AndroidWebViewController) {
@@ -138,8 +127,7 @@ class _PrivacyAgreementViewState extends State<PrivacyAgreementView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          agreeButton ? Theme.of(context).colorScheme.background : Colors.white,
+      backgroundColor: Colors.white,
       body: isLoading
           ? Center(
               child: CupertinoActivityIndicator(
@@ -148,64 +136,10 @@ class _PrivacyAgreementViewState extends State<PrivacyAgreementView> {
               ),
             )
           : SafeArea(
-              child: Stack(
-                children: [
-                  WebViewWidget(controller: _controller),
-                  if (agreeButton)
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: LayoutBuilder(
-                          builder: (BuildContext context,
-                                  BoxConstraints constraints) =>
-                              SizedBox(
-                            width: constraints.maxWidth * 0.9,
-                            height: 60,
-                            child: _AgreeButton(
-                              onPressed: _accept,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
+              child: WebViewWidget(controller: _controller),
             ),
     );
   }
-
-  void _accept() {
-    _storageService.setBool(StorageKeys.acceptedPrivacy, true);
-
-    Navigator.of(context).pushReplacementNamed(RouteNames.homeMenu);
-  }
 }
 
-class _AgreeButton extends StatelessWidget {
-  final VoidCallback onPressed;
-  const _AgreeButton({required this.onPressed});
 
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoButton(
-      padding: EdgeInsets.zero,
-      onPressed: onPressed,
-      child: Container(
-        alignment: Alignment.center,
-        width: double.infinity,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          'Accept app privacy',
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-        ),
-      ),
-    );
-  }
-}

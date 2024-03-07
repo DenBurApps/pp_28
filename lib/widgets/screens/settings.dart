@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:pp_28/models/arguments.dart';
+import 'package:pp_28/widgets/screens/agreement.dart';
 
 import '../../helpers/email_helper.dart';
 import '../../helpers/image/image_helper.dart';
 import '../../services/navigation/route_names.dart';
 
 class SettingsView extends StatefulWidget {
-  SettingsView({super.key});
+  const SettingsView({super.key});
 
   @override
   State<SettingsView> createState() => _SettingsViewState();
@@ -15,13 +17,13 @@ class _SettingsViewState extends State<SettingsView> {
   final TextEditingController _inputController = TextEditingController();
 
   void _send() => EmailHelper.launchEmailSubmission(
-    toEmail: 'huansui@sontfinances.site',
-    subject: _inputController.text,
-    errorCallback: () {},
-    doneCallback: () => setState(() {
-      _inputController.clear();
-    }),
-  );
+        toEmail: 'huansui@sontfinances.site',
+        subject: _inputController.text,
+        errorCallback: () {},
+        doneCallback: () => setState(() {
+          _inputController.clear();
+        }),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -41,17 +43,23 @@ class _SettingsViewState extends State<SettingsView> {
                 _SettingsCard(
                   icon: SvgNames.privacyIcon,
                   text: 'Privacy Policy',
-                  onTap: () {
-                    Navigator.of(context).pushNamed(RouteNames.privacy);
-                  },
+                  onTap: () => Navigator.of(context).pushNamed(
+                    RouteNames.agreement,
+                    arguments: AgreementViewArguments(
+                      agreementType: AgreementType.privacy,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 10),
                 _SettingsCard(
                   icon: SvgNames.termsIcon,
                   text: 'Terms of use',
-                  onTap: () {
-                    Navigator.of(context).pushNamed(RouteNames.terms);
-                  },
+                  onTap: () => Navigator.of(context).pushNamed(
+                    RouteNames.agreement,
+                    arguments: AgreementViewArguments(
+                      agreementType: AgreementType.terms,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 10),
                 _SettingsCard(
@@ -62,7 +70,7 @@ class _SettingsViewState extends State<SettingsView> {
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
                         borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(30.0)),
+                            BorderRadius.vertical(top: Radius.circular(30.0)),
                       ),
                       context: context,
                       builder: (BuildContext context) {
@@ -73,7 +81,7 @@ class _SettingsViewState extends State<SettingsView> {
                             height: 300,
                             child: Padding(
                               padding:
-                              const EdgeInsets.symmetric(horizontal: 20),
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
@@ -98,7 +106,7 @@ class _SettingsViewState extends State<SettingsView> {
                                     child: Text(
                                       'Write anything you want to tell us about',
                                       style:
-                                      Theme.of(context).textTheme.bodySmall,
+                                          Theme.of(context).textTheme.bodySmall,
                                     ),
                                   ),
                                   const SizedBox(height: 5),
@@ -107,7 +115,7 @@ class _SettingsViewState extends State<SettingsView> {
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius:
-                                        BorderRadius.circular(16.0),
+                                            BorderRadius.circular(16.0),
                                       ),
                                       focusedBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -126,15 +134,15 @@ class _SettingsViewState extends State<SettingsView> {
                                       builder: (context, value, child) {
                                         return ElevatedButton(
                                           onPressed:
-                                          (_inputController.text.isNotEmpty)
-                                              ? _send
-                                              : null,
+                                              (_inputController.text.isNotEmpty)
+                                                  ? _send
+                                                  : null,
                                           child: Text('Send',
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyLarge!
                                                   .copyWith(
-                                                  color: Colors.white)),
+                                                      color: Colors.white)),
                                         );
                                       }),
                                   const SizedBox(height: 20),

@@ -6,6 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pp_28/helpers/dialog_helper.dart';
+import 'package:pp_28/models/arguments.dart';
+import 'package:pp_28/services/remote_config_service.dart';
+import 'package:pp_28/widgets/screens/agreement.dart';
 import '../../services/navigation/route_names.dart';
 import '../../storage/storage_service.dart';
 
@@ -17,8 +20,11 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
+  final _remoteConfigService = GetIt.instance<RemoteConfigService>();
   final _storageService = GetIt.instance<StorageService>();
   final _connectivity = Connectivity();
+
+  late bool usePrivacyAgreement;
 
   @override
   void initState() {
@@ -30,7 +36,7 @@ class _SplashViewState extends State<SplashView> {
     await _initConnectivity(
       () async => await DialogHelper.showNoInternetDialog(context),
     );
-
+    usePrivacyAgreement = _remoteConfigService.getBool(ConfigKey.usePrivacy);
     _navigate();
   }
 
@@ -54,16 +60,35 @@ class _SplashViewState extends State<SplashView> {
   }
 
   void _navigate() {
-    final seenOnboarding =
-        _storageService.getBoolOrFalse(StorageKeys.seenOnboarding);
-    if (!seenOnboarding) {
-      Navigator.of(context).popAndPushNamed(RouteNames.onboarding);
+    if (usePrivacyAgreement) {
+      final seenOnboarding =
+          _storageService.getBoolOrFalse(StorageKeys.seenOnboarding);
+      if (!seenOnboarding) {
+        Navigator.of(context).pushReplacementNamed(RouteNames.onboarding);
+      } else {
+        final seenPrivacyAgreement =
+            _storageService.getBoolOrFalse(StorageKeys.seenPrivacyAgreement);
+        if (!seenPrivacyAgreement) {
+          _storageService.setBool(StorageKeys.seenPrivacyAgreement, true);
+          DialogHelper.showPrivacyAgreementDialog(
+            context,
+            yes: () => Navigator.of(context).pushReplacementNamed(
+              RouteNames.agreement,
+              arguments: AgreementViewArguments(
+                agreementType: AgreementType.privacy,
+                usePrivacyAgreement: true,
+              ),
+            ),
+            no: () => Navigator.of(context).pushReplacementNamed(
+              RouteNames.homeMenu,
+            ),
+          );
+        } else {
+          Navigator.of(context).pushReplacementNamed(RouteNames.homeMenu);
+        }
+      }
     } else {
-      final acceptedPrivacy =
-          _storageService.getBoolOrFalse(StorageKeys.acceptedPrivacy);
-      Navigator.of(context).popAndPushNamed(
-        !acceptedPrivacy ? RouteNames.privacyAgreement : RouteNames.homeMenu,
-      );
+      Navigator.of(context).pushReplacementNamed(RouteNames.privacy);
     }
     FlutterNativeSplash.remove();
   }

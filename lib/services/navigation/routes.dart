@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pp_28/widgets/screens/add_card.dart';
+import 'package:pp_28/widgets/screens/agreement.dart';
 import 'package:pp_28/widgets/screens/edit_balance.dart';
 import 'package:pp_28/widgets/screens/edit_operations.dart';
 import 'package:pp_28/widgets/screens/income.dart';
@@ -12,9 +13,7 @@ import '/widgets/screens/course_details.dart';
 import '/widgets/screens/lesson.dart';
 import '/widgets/screens/courses_lesson_step.dart';
 import '/widgets/screens/finish_lesson.dart';
-import '/widgets/screens/privacy.dart';
 import '/widgets/screens/quiz.dart';
-import '/widgets/screens/terms.dart';
 import '../../widgets/screens/courses.dart';
 import '../../widgets/screens/balance.dart';
 import '../../widgets/screens/home_menu.dart';
@@ -31,8 +30,6 @@ class Routes {
       RouteNames.onboarding: (context) => const OnboardingView(),
       RouteNames.home: (context) => const BalanceView(),
       RouteNames.homeMenu: (context) => const HomeMenuView(),
-      RouteNames.privacy: (context) => const PrivacyView(),
-      RouteNames.terms: (context) => const TermsView(),
       RouteNames.courseDetails: (context) => CourseDetailsView(),
       RouteNames.courses: (context) => CoursesView(),
       RouteNames.courseLesson: (context) => LessonView(),
@@ -47,7 +44,8 @@ class Routes {
       RouteNames.editOperations: (context) => const EditOperationsView(),
       RouteNames.myWallet: (context) => const MyWalletView(),
       RouteNames.statistics: (context) => StatisticsView(),
-      RouteNames.privacyAgreement:(context) => const PrivacyAgreementView(), 
+      RouteNames.privacyAgreement: (context) => const PrivacyAgreementView(),
+      RouteNames.agreement: (context) => AgreementView.create(context),
     };
   }
 }
